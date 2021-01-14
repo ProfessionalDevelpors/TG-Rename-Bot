@@ -40,6 +40,20 @@ async def rename_doc(bot, update):
         await update.reply_text("You are B A N N E D")
         return
     TRChatBase(update.from_user.id, update.text, "rename")
+try:
+        chat = await bot.get_chat_member(Config.CHANNEL, user_id)
+        if chat.status == 'kicked':
+            raise UserBannedInChannel
+    except UserNotParticipant:
+        await update.reply(f'To use this Bot, You have to Join {Config.CHANNEL} \n\n Join {Config.CHANNEL} and Enjoy the Bot ❤️')
+        return
+    except UserBannedInChannel:
+        await  update.reply_text("You are B A N N E D")
+        return
+    except Exception:
+        await update.reply('Unable to verify user channel subscription, Contact @StarkFeedBackBot')
+        return
+
     if (" " in update.text) and (update.reply_to_message is not None):
         cmd, file_name = update.text.split(" ", 1)
         if len(file_name) > 64:
